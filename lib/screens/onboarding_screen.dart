@@ -36,17 +36,17 @@ class OnboardingScreen extends StatelessWidget {
                     Positioned(
                       top: 40,
                       right: -60,
-                      child: _circulo(180, verdeMedio.withOpacity(0.35)),
+                      child: _circulo(180, verdeMedio.withValues(alpha: 0.35)),
                     ),
                     Positioned(
                       top: 140,
                       right: 20,
-                      child: _circulo(90, verdeMedio.withOpacity(0.5)),
+                      child: _circulo(90, verdeMedio.withValues(alpha: 0.5)),
                     ),
                     Positioned(
                       bottom: -40,
                       left: -30,
-                      child: _circulo(140, verdeMedio.withOpacity(0.25)),
+                      child: _circulo(140, verdeMedio.withValues(alpha: 0.25)),
                     ),
 
                     // contenido
@@ -62,7 +62,7 @@ class OnboardingScreen extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: crema.withOpacity(0.6), width: 1.2),
+                                    border: Border.all(color: crema.withValues(alpha: 0.6), width: 1.2),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: const Icon(Icons.favorite_border, color: crema, size: 18),
@@ -94,7 +94,7 @@ class OnboardingScreen extends StatelessWidget {
                             Text(
                               'Gestioná tus turnos, consultá tus estudios y conectá con los mejores especialistas — todo desde un solo lugar.',
                               style: TextStyle(
-                                color: crema.withOpacity(0.85),
+                                color: crema.withValues(alpha: 0.85),
                                 fontSize: 14,
                                 height: 1.5,
                               ),
@@ -187,7 +187,7 @@ class OnboardingScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12,
-                          color: verdeOscuro.withOpacity(0.7),
+                          color: verdeOscuro.withValues(alpha: 0.7),
                         ),
                       ),
                     ),

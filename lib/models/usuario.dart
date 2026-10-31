@@ -1,4 +1,4 @@
- enum RolUsuario { paciente, recepcion }
+enum RolUsuario { paciente, recepcion }
 
 class Usuario {
   final String id;
@@ -27,17 +27,14 @@ class Usuario {
     this.numeroAfiliado,
   });
 
-  /// Nombre completo armado.
   String get nombreCompleto => '$nombre $apellido'.trim();
 
-  /// Iniciales para el avatar (ej: "MG").
   String get iniciales {
     final n = nombre.isNotEmpty ? nombre[0] : '';
     final a = apellido.isNotEmpty ? apellido[0] : '';
     return '$n$a'.toUpperCase();
   }
 
-  /// Devuelve una copia con algunos campos modificados.
   Usuario copyWith({
     String? nombre,
     String? apellido,
@@ -59,6 +56,38 @@ class Usuario {
       fechaNacimiento: fechaNacimiento ?? this.fechaNacimiento,
       obraSocial: obraSocial ?? this.obraSocial,
       numeroAfiliado: numeroAfiliado ?? this.numeroAfiliado,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nombre': nombre,
+      'apellido': apellido,
+      'dni': dni,
+      'telefono': telefono,
+      'email': email,
+      'password': password,
+      'rol': rol.name,
+      'fechaNacimiento': fechaNacimiento,
+      'obraSocial': obraSocial,
+      'numeroAfiliado': numeroAfiliado,
+    };
+  }
+
+  factory Usuario.fromObject(Map<String, dynamic> map) {
+    return Usuario(
+      id: map['id'],
+      nombre: map['nombre'],
+      apellido: map['apellido'],
+      dni: map['dni'],
+      telefono: map['telefono'],
+      email: map['email'],
+      password: map['password'],
+      rol: RolUsuario.values.byName(map['rol']),
+      fechaNacimiento: map['fechaNacimiento'],
+      obraSocial: map['obraSocial'],
+      numeroAfiliado: map['numeroAfiliado'],
     );
   }
 }

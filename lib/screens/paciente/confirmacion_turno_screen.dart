@@ -3,15 +3,18 @@ import 'package:provider/provider.dart';
 import '../../models/especialista.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/turnos_provider.dart';
+import '../../utils/formato_fecha.dart';
 import 'home_paciente_screen.dart';
 
 class ConfirmacionTurnoScreen extends StatelessWidget {
   final Especialista especialista;
+  final DateTime fecha;
   final String horario;
 
   const ConfirmacionTurnoScreen({
     super.key,
     required this.especialista,
+    required this.fecha,
     required this.horario,
   });
 
@@ -35,8 +38,9 @@ class ConfirmacionTurnoScreen extends StatelessWidget {
                   children: [
                     _fila('Especialidad', especialista.especialidad),
                     _fila('Profesional', especialista.nombre),
-                    _fila('Horario', horario),
-                    _fila('Paciente', usuario.nombre),
+                    _fila('Fecha', formatearFechaCorta(fecha)),
+                    _fila('Horario', '$horario hs'),
+                    _fila('Paciente', usuario.nombreCompleto),
                   ],
                 ),
               ),
@@ -44,16 +48,20 @@ class ConfirmacionTurnoScreen extends StatelessWidget {
             const SizedBox(height: 28),
             ElevatedButton(
               onPressed: () {
-                context.read<TurnosProvider>().agregarTurno(
-                      pacienteNombre: usuario.nombre,
+                context.read<TurnosProvider>().agregarTurnoEnFecha(
+                      pacienteNombre: usuario.nombreCompleto,
                       especialista: especialista,
+                      fecha: fecha,
                       horario: horario,
                     );
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
                     title: const Text('Turno confirmado'),
-                    content: Text('Tu turno con ${especialista.nombre} a las $horario quedó confirmado.'),
+                    content: Text(
+                      'Tu turno con ${especialista.nombre} el '
+                      '${formatearFechaCorta(fecha)} a las $horario quedó confirmado.',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () {

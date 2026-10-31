@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import '../screens/paciente/home_paciente_screen.dart';
 import '../screens/paciente/seleccion_especialidad_screen.dart';
 import '../screens/paciente/historial_clinico_screen.dart';
 import '../screens/paciente/perfil_paciente_screen.dart';
 
 class BarraNavegacionPaciente extends StatelessWidget {
-  /// Índice activo: 0 = Sacar turno, 1 = Historial, 2 = Perfil.
   final int indiceActivo;
   const BarraNavegacionPaciente({super.key, required this.indiceActivo});
 
@@ -40,9 +40,7 @@ class BarraNavegacionPaciente extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Color(0xFFE0E0E0), width: 1),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFFE0E0E0), width: 1)),
       ),
       child: SafeArea(
         top: false,
@@ -92,9 +90,7 @@ class _ItemBarra extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color =
-        activo ? BarraNavegacionPaciente.verdeOscuro : BarraNavegacionPaciente.gris;
-
+    final color = activo ? BarraNavegacionPaciente.verdeOscuro : BarraNavegacionPaciente.gris;
     return Expanded(
       child: InkWell(
         onTap: onTap,
@@ -107,7 +103,7 @@ class _ItemBarra extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                 decoration: activo
                     ? BoxDecoration(
-                        color: BarraNavegacionPaciente.verdeOscuro.withOpacity(0.12),
+                        color: BarraNavegacionPaciente.verdeOscuro.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(20),
                       )
                     : null,

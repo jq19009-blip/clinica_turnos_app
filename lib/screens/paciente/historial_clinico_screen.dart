@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/barra_navegacion_paciente.dart';
+import 'home_paciente_screen.dart';
 
 class HistorialClinicoScreen extends StatelessWidget {
   const HistorialClinicoScreen({super.key});
@@ -37,24 +38,43 @@ class HistorialClinicoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: crema,
-      appBar: AppBar(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePacienteScreen()),
+        );
+      },
+      child: Scaffold(
         backgroundColor: crema,
-        elevation: 0,
-        foregroundColor: verdeOscuro,
-        title: const Text(
-          'Historial clínico',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          backgroundColor: crema,
+          elevation: 0,
+          foregroundColor: verdeOscuro,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomePacienteScreen()),
+              );
+            },
+          ),
+          title: const Text(
+            'Historial clínico',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
+        body: ListView.separated(
+          padding: const EdgeInsets.all(20),
+          itemCount: _visitas.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 14),
+          itemBuilder: (context, i) => _TarjetaVisita(visita: _visitas[i]),
+        ),
+        bottomNavigationBar: const BarraNavegacionPaciente(indiceActivo: 1),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(20),
-        itemCount: _visitas.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 14),
-        itemBuilder: (context, i) => _TarjetaVisita(visita: _visitas[i]),
-      ),
-      bottomNavigationBar: const BarraNavegacionPaciente(indiceActivo: 1),
     );
   }
 }
@@ -72,7 +92,7 @@ class _TarjetaVisita extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/barra_navegacion_paciente.dart';
 import '../login_screen.dart';
+import 'home_paciente_screen.dart';
 
 class PerfilPacienteScreen extends StatefulWidget {
   const PerfilPacienteScreen({super.key});
@@ -116,185 +117,204 @@ class _PerfilPacienteScreenState extends State<PerfilPacienteScreen> {
   Widget build(BuildContext context) {
     final usuario = context.watch<AuthProvider>().usuarioActual!;
 
-    return Scaffold(
-      backgroundColor: crema,
-      appBar: AppBar(
-        backgroundColor: verdeOscuro,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Mi perfil',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.white,
-              child: Text(
-                usuario.iniciales,
-                style: const TextStyle(
-                  color: verdeOscuro,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-            ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePacienteScreen()),
+        );
+      },
+      child: Scaffold(
+        backgroundColor: crema,
+        appBar: AppBar(
+          backgroundColor: verdeOscuro,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomePacienteScreen()),
+              );
+            },
           ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
+          title: const Text(
+            'Mi perfil',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.white,
+                child: Text(
+                  usuario.iniciales,
+                  style: const TextStyle(
                     color: verdeOscuro,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    usuario.iniciales,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        usuario.nombreCompleto,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1F1F1F),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'DNI ${usuario.dni}',
-                        style: const TextStyle(fontSize: 13, color: Colors.black54),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        usuario.email,
-                        style: const TextStyle(fontSize: 13, color: Colors.black54),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          _seccion('DATOS PERSONALES'),
-          const SizedBox(height: 10),
-          _campo('Nombre *', _nombreCtrl, habilitado: _modoEdicion),
-          const SizedBox(height: 12),
-          _campo('Apellido *', _apellidoCtrl, habilitado: _modoEdicion),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(child: _campo('DNI', _dniCtrl, habilitado: false)),
-              const SizedBox(width: 12),
-              Expanded(child: _campo('Fecha de nacimiento', _fechaNacCtrl, habilitado: _modoEdicion)),
-            ],
-          ),
-          const SizedBox(height: 24),
-          _seccion('CONTACTO'),
-          const SizedBox(height: 10),
-          _campo('Email *', _emailCtrl, habilitado: _modoEdicion, keyboardType: TextInputType.emailAddress),
-          const SizedBox(height: 12),
-          _campo('Teléfono', _telefonoCtrl, habilitado: _modoEdicion, keyboardType: TextInputType.phone),
-          const SizedBox(height: 24),
-          _seccion('COBERTURA MÉDICA'),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(child: _campo('Obra social / Prepaga', _obraSocialCtrl, habilitado: _modoEdicion)),
-              const SizedBox(width: 12),
-              Expanded(child: _campo('N° afiliado', _numAfiliadoCtrl, habilitado: _modoEdicion)),
-            ],
-          ),
-          const SizedBox(height: 30),
-          if (_modoEdicion) ...[
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: verdeOscuro,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onPressed: _guardar,
-                child: const Text('Guardar cambios', style: TextStyle(fontWeight: FontWeight.bold)),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: verdeOscuro,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  side: const BorderSide(color: verdeOscuro),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onPressed: _cancelarEdicion,
-                child: const Text('Cancelar'),
-              ),
-            ),
-          ] else ...[
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: verdeOscuro,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                icon: const Icon(Icons.edit_outlined),
-                label: const Text('Editar perfil', style: TextStyle(fontWeight: FontWeight.bold)),
-                onPressed: () => setState(() => _modoEdicion = true),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  side: const BorderSide(color: Colors.red),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                icon: const Icon(Icons.logout),
-                label: const Text('Cerrar sesión', style: TextStyle(fontWeight: FontWeight.bold)),
-                onPressed: _cerrarSesion,
               ),
             ),
           ],
-          const SizedBox(height: 20),
-        ],
+        ),
+        body: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: verdeOscuro,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      usuario.iniciales,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          usuario.nombreCompleto,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1F1F1F),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'DNI ${usuario.dni}',
+                          style: const TextStyle(fontSize: 13, color: Colors.black54),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          usuario.email,
+                          style: const TextStyle(fontSize: 13, color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            _seccion('DATOS PERSONALES'),
+            const SizedBox(height: 10),
+            _campo('Nombre *', _nombreCtrl, habilitado: _modoEdicion),
+            const SizedBox(height: 12),
+            _campo('Apellido *', _apellidoCtrl, habilitado: _modoEdicion),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(child: _campo('DNI', _dniCtrl, habilitado: false)),
+                const SizedBox(width: 12),
+                Expanded(child: _campo('Fecha de nacimiento', _fechaNacCtrl, habilitado: _modoEdicion)),
+              ],
+            ),
+            const SizedBox(height: 24),
+            _seccion('CONTACTO'),
+            const SizedBox(height: 10),
+            _campo('Email *', _emailCtrl, habilitado: _modoEdicion, keyboardType: TextInputType.emailAddress),
+            const SizedBox(height: 12),
+            _campo('Teléfono', _telefonoCtrl, habilitado: _modoEdicion, keyboardType: TextInputType.phone),
+            const SizedBox(height: 24),
+            _seccion('COBERTURA MÉDICA'),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(child: _campo('Obra social / Prepaga', _obraSocialCtrl, habilitado: _modoEdicion)),
+                const SizedBox(width: 12),
+                Expanded(child: _campo('N° afiliado', _numAfiliadoCtrl, habilitado: _modoEdicion)),
+              ],
+            ),
+            const SizedBox(height: 30),
+            if (_modoEdicion) ...[
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: verdeOscuro,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: _guardar,
+                  child: const Text('Guardar cambios', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: verdeOscuro,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    side: const BorderSide(color: verdeOscuro),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: _cancelarEdicion,
+                  child: const Text('Cancelar'),
+                ),
+              ),
+            ] else ...[
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: verdeOscuro,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  icon: const Icon(Icons.edit_outlined),
+                  label: const Text('Editar perfil', style: TextStyle(fontWeight: FontWeight.bold)),
+                  onPressed: () => setState(() => _modoEdicion = true),
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    side: const BorderSide(color: Colors.red),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  icon: const Icon(Icons.logout),
+                  label: const Text('Cerrar sesión', style: TextStyle(fontWeight: FontWeight.bold)),
+                  onPressed: _cerrarSesion,
+                ),
+              ),
+            ],
+            const SizedBox(height: 20),
+          ],
+        ),
+        bottomNavigationBar: const BarraNavegacionPaciente(indiceActivo: 2),
       ),
-      bottomNavigationBar: const BarraNavegacionPaciente(indiceActivo: 2),
     );
   }
 
@@ -353,3 +373,4 @@ class _PerfilPacienteScreenState extends State<PerfilPacienteScreen> {
     );
   }
 }
+
