@@ -21,7 +21,7 @@ class Turno {
     this.estado = EstadoTurno.confirmado,
   });
 
-  /// Serialización: De Objeto a Mapa (para guardar en DB)
+  
   Map<String, dynamic> toMap() {
     return {
       'id': id,

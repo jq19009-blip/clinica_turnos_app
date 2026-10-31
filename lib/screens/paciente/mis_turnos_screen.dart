@@ -5,7 +5,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/turnos_provider.dart';
 import '../../utils/formato_fecha.dart';
 import '../../widgets/badge_estado.dart';
-import 'detalle_turno_screen.dart';
+
 
 class MisTurnosScreen extends StatelessWidget {
   const MisTurnosScreen({super.key});

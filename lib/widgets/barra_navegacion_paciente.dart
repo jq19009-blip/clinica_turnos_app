@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../screens/paciente/home_paciente_screen.dart';
 import '../screens/paciente/seleccion_especialidad_screen.dart';
 import '../screens/paciente/historial_clinico_screen.dart';
 import '../screens/paciente/perfil_paciente_screen.dart';

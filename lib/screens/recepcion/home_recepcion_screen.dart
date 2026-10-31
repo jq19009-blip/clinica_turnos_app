@@ -104,9 +104,7 @@ class HomeRecepcionScreen extends StatelessWidget {
   }
 }
 
-// ============================================================
-// TÍTULO DE ESPECIALIDAD
-// ============================================================
+
 class _TituloEspecialidad extends StatelessWidget {
   final String especialidad;
   final int cantidad;
